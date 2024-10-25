@@ -3,6 +3,7 @@ package service;
 import model.Car;
 import model.User;
 import repository.CarRepository;
+import repository.UserRepository;
 import utils.MyList;
 
 /**
@@ -13,10 +14,12 @@ import utils.MyList;
 public class MainServiceImpl implements MainService {
 
     private final CarRepository repositoryCar;
+    private final UserRepository repositoryUser;
     private User activeUser;
 
-    public MainServiceImpl(CarRepository carRepository) {
+    public MainServiceImpl(CarRepository carRepository, UserRepository repositoryUser) {
         this.repositoryCar = carRepository;
+        this.repositoryUser = repositoryUser;
     }
 
 
@@ -75,16 +78,50 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public User registerUser(String email, String password) {
-        return null;
+        // Добавить валидацию email и password
+        // Если не прошли валидацию - закончить работу метода, вернуть null
+
+        if (repositoryUser.isEmailExists(email)) {
+            System.out.println("Email already exists");
+            return null;
+        }
+
+        User user = repositoryUser.addUser(email, password);
+
+        return user;
     }
 
     @Override
     public boolean loginUser(String email, String password) {
-        return false;
+        /*
+        1. Нужно пользователя в БД с таким email
+        2. Если пользователя не существует - отказать
+        3. Проверить, совпадает ли пароль у пользователя в БД с паролем, который пришел в методе
+        4. Если не совпадает - отказать
+        5. Залогинить пользователя - пометить как активный пользователь системы
+         */
+
+        User user = repositoryUser.getUserByEmail(email);
+        if (user == null) {
+            System.out.println("Invalid email or password");
+            return false;
+        }
+
+        if (!user.getPassword().equals(password)) {
+            System.out.println("Invalid email or password");
+            return false;
+        }
+
+        activeUser = user;
+        return true;
     }
 
     @Override
     public void logout() {
+        activeUser = null;
+    }
 
+    public User getActiveUser() {
+        return activeUser;
     }
 }
