@@ -107,7 +107,7 @@ public class CarRepositoryImpl implements CarRepository {
         return result;
     }
 
-    @Override
+    // Todo перенести в сервис
     public boolean updateCarPrice(int id, double price) {
         Car car = getById(id);
         // Метод getById не нашел машину по такому id (вернул null)
@@ -117,13 +117,9 @@ public class CarRepositoryImpl implements CarRepository {
         return true;
     }
 
-    @Override
-    public boolean takeCar(int id) {
-        return false;
-    }
 
     @Override
-    public Car deleteCar(int id) {
-        return null;
+    public void deleteCar(Car car) {
+        cars.remove(car);
     }
 }

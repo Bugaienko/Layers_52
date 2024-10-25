@@ -1,23 +1,16 @@
-package repository;
+package service;
 
 import model.Car;
+import model.User;
 import utils.MyList;
 
 /**
-* @author Sergey Bugaenko
-* {@code @date} 24.10.2024
-*/
-
-/*
-CRUD - операции
-- Create (Создание) - добавление новых данных
-- Read (Чтение) - получение или чтение данных
-- Update (Обновление) - изменение существующих данных
-- Delete (Удаление) - удаление данных
+ * @author Sergey Bugaenko
+ * {@code @date} 25.10.2024
  */
 
+public interface MainService {
 
-public interface CarRepository {
 
     // Create - add
     void addCar(String model, int year, double price);
@@ -27,7 +20,7 @@ public interface CarRepository {
     MyList<Car> getAllCars();
 
     // получить авто по id
-    Car getById(int id);
+    // Car getById(int id);
 
     // Получить список машин по модели
     MyList<Car> getCarsByModel(String model);
@@ -35,9 +28,18 @@ public interface CarRepository {
     // Получить список свободных машин
     MyList<Car> getFreeCars();
 
+    // Update
+    boolean updateCarPrice(int id, double price);
+
+    boolean takeCar(int id);
+
     // Delete
-    void deleteCar(Car car);
+    Car deleteCar(int id);
 
+    User registerUser(String email, String password);
 
+    boolean loginUser(String email, String password);
+
+    void logout();
 
 }
