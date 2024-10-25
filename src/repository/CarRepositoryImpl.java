@@ -42,27 +42,79 @@ public class CarRepositoryImpl implements CarRepository {
 
     @Override
     public MyList<Car> getAllCars() {
-        return null;
+        return cars;
     }
 
     @Override
     public Car getById(int id) {
+        for (Car car : cars) {
+            if (car.getId() == id) return car;
+        }
         return null;
     }
 
     @Override
     public MyList<Car> getCarsByModel(String model) {
-        return null;
+        MyList<Car> result = new MyArrayList<>();
+        for (Car car : cars) {
+            if (car.getModel().equals(model)) result.add(car);
+        }
+        return result;
     }
 
+    // Метод должен вернуть список всех свободных машин.
+    // Т.е. список машин, у которых isBusy = false
     @Override
     public MyList<Car> getFreeCars() {
-        return null;
+        MyList<Car> result = new MyArrayList<>();
+
+        // Занятая - isBusy = true
+        // Свободная - не занятая - isBusy = false
+
+        for (Car car : cars) {
+            // false | true
+            // Если машина НЕ занята!
+            if (!car.isBusy()) {
+                result.add(car);
+            }
+
+            // Тоже самое
+//            if (car.isBusy()) {
+//                // Машина занята. Лействий в данном блоке не требуется
+//                // Т.к. я ищу НЕ занятый машины
+//            } else {
+//                // Машина не занята
+//                result.add(car);
+//            }
+        }
+        return result;
+    }
+
+    /*
+    Проверка на занятость машины
+        if (car.isBusy()) {
+            // Действие с занятой машиной.
+       }
+     */
+
+    // Метод, возвращающий список всех занятых машин
+    public MyList<Car> getAllBusyCars() {
+        MyList<Car> result = new MyArrayList<>();
+
+        for (Car car : cars) {
+            if (car.isBusy()) result.add(car);
+        }
+        return result;
     }
 
     @Override
-    public boolean updateCarModel(int id, String model) {
-        return false;
+    public boolean updateCarPrice(int id, double price) {
+        Car car = getById(id);
+        // Метод getById не нашел машину по такому id (вернул null)
+        if (car == null) return false;
+
+        car.setPrice(price);
+        return true;
     }
 
     @Override

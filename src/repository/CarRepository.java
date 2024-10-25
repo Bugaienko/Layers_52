@@ -36,7 +36,7 @@ public interface CarRepository {
     MyList<Car> getFreeCars();
 
     // Update
-    boolean updateCarModel(int id, String model);
+    boolean updateCarPrice(int id, double price);
 
     boolean takeCar(int id);
 
