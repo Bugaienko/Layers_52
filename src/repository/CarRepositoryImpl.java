@@ -30,6 +30,18 @@ public class CarRepositoryImpl implements CarRepository {
 
     public CarRepositoryImpl() {
         this.cars = new MyArrayList<>();
+        addCars();
+    }
+
+    private void addCars() {
+        cars.addAll(
+                new Car(currentId.getAndIncrement(), "VW Golf", 2021, 20000.00),
+                new Car(currentId.getAndIncrement(), "VW Golf", 2019, 17500.00),
+                new Car(currentId.getAndIncrement(), "VW Passat", 2022, 30000.00),
+                new Car(currentId.getAndIncrement(), "VW Passat", 2020, 24300.00),
+                new Car(currentId.getAndIncrement(), "VW Tiguan", 2021, 28000.00),
+                new Car(currentId.getAndIncrement(), "VW Tiguan", 2023, 34000.00)
+        );
     }
 
 
@@ -107,15 +119,7 @@ public class CarRepositoryImpl implements CarRepository {
         return result;
     }
 
-    // Todo перенести в сервис
-    public boolean updateCarPrice(int id, double price) {
-        Car car = getById(id);
-        // Метод getById не нашел машину по такому id (вернул null)
-        if (car == null) return false;
 
-        car.setPrice(price);
-        return true;
-    }
 
 
     @Override

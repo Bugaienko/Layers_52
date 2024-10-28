@@ -1,6 +1,7 @@
 package service;
 
 import model.Car;
+import model.Role;
 import model.User;
 import repository.CarRepository;
 import repository.UserRepository;
@@ -25,6 +26,13 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public void addCar(String model, int year, double price) {
+        // Проверка роли текущего пользователя
+        if (activeUser == null || activeUser.getRole() != Role.ADMIN) {
+            System.out.println("Добавление нового автомобиля доступно только Администраторам");
+            return;
+        }
+
+        // Проверка входящих значений и добавление автомобиля в БД
 
     }
 
@@ -45,6 +53,12 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public boolean updateCarPrice(int id, double price) {
+        // Добавим проверку роли пользователя
+        if (activeUser == null || activeUser.getRole() != Role.ADMIN) {
+            System.out.println("Изменять цену может только администратор");
+            return false;
+        }
+
         Car car = repositoryCar.getById(id);
         if (car == null || price < 0) {
             return false;
@@ -56,6 +70,17 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public boolean takeCar(int id) {
+        // Проверка, что пользователь авторизирован в системе
+        if (activeUser == null) {
+            System.out.println("Выполните вход в систему");
+            return false;
+        }
+
+        if (activeUser.getRole() == Role.BLOCKED) {
+            System.out.println("Ваш аккаунт заблокирован! Обратитесь в службу поддержки");
+            return false;
+        }
+
         Car car = repositoryCar.getById(id);
         // Todo
         /*
@@ -69,6 +94,12 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public Car deleteCar(int id) {
+        // Проверка пользователя
+        if (activeUser == null || activeUser.getRole() != Role.ADMIN) {
+            System.out.println("Доступно только Администратору");
+            return null;
+        }
+        
         Car car = repositoryCar.getById(id);
         if (car == null) return null;
 
