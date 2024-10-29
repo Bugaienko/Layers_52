@@ -6,6 +6,7 @@ import model.User;
 import repository.CarRepository;
 import repository.UserRepository;
 import utils.MyList;
+import utils.PersonValidator;
 
 /**
  * @author Sergey Bugaenko
@@ -111,6 +112,15 @@ public class MainServiceImpl implements MainService {
     public User registerUser(String email, String password) {
         // Добавить валидацию email и password
         // Если не прошли валидацию - закончить работу метода, вернуть null
+        if (!PersonValidator.isEmailValid(email)) {
+            System.out.println("Email не прошел проверку!");
+            return null;
+        }
+
+        if (!PersonValidator.isPasswordValid(password)) {
+            System.out.println("Пароль не прошел валидацию");
+            return null;
+        }
 
         if (repositoryUser.isEmailExists(email)) {
             System.out.println("Email already exists");
